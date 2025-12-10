@@ -384,20 +384,21 @@
         .close-button {
             position: absolute;
             top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
+            left: 20px; /* move away from PiP button */
+            background: rgba(0, 0, 0, 0.65);
             color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            font-size: 1.5em;
+            font-size: 1.6em;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
             z-index: 10;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
         }
 
         .close-button:hover {
@@ -494,11 +495,12 @@
             }
 
             .close-button {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2em;
-                top: 15px;
-                right: 15px;
+                width: 60px;
+                height: 60px;
+                font-size: 1.6em;
+                top: 12px;
+                left: 12px;
+                border-width: 2px;
             }
         }
 
@@ -571,7 +573,7 @@
                 thumbnail: "https://drive.google.com/thumbnail?id=1Iz0X1wIJFqKGur5IXtXOJ04uxTs_69wG&sz=w400"
             },
             {
-                title: "You You You Pain",
+                title: "You You You Paint",
                 fileId: "1jQGWCSw9aXfBeo0eNYtX0nKZ_PrwK8Ij",
                 thumbnail: "https://drive.google.com/thumbnail?id=1jQGWCSw9aXfBeo0eNYtX0nKZ_PrwK8Ij&sz=w400"
             },
