@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paul Kongwarit - Music Video Album</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            z-index: -2;
+        }
+
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        .santa-train {
+            position: fixed;
+            bottom: 50%;
+            left: -200px;
+            font-size: 40px;
+            z-index: 500;
+            animation: trainMove 8s linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes trainMove {
+            0% {
+                left: -200px;
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                left: 100vw;
+                opacity: 0;
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .coins-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .coin {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #FFD700, #FFA500);
+            box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.3), 0 2px 5px rgba(0, 0, 0, 0.2);
+            animation: coinFall linear forwards;
+        }
+
+        .coin::before {
+            content: '💰';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+        }
+
+        @keyframes coinFall {
+            0% {
+                transform: translateY(-50px) rotateZ(0deg);
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotateZ(360deg);
+                opacity: 0;
+            }
+        }
+
+        .coin {
+            z-index: 0;
+        }
+
+        .jingle-audio {
+            display: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            user-select: none;
+        }
+
+        header h1:hover {
+            transform: scale(1.05);
+        }
+
+        .music-note {
+            color: white;
+            margin-right: 10px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        header h1:hover .music-note {
+            animation: noteJump 0.6s ease;
+        }
+
+        @keyframes noteJump {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.1);
+            }
+        }
+
+        .note-particle {
+            position: fixed;
+            font-size: 2em;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            animation: floatNote 3s ease-out forwards;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 600;
+        }
+
+        @keyframes floatNote {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-150px) scale(0.5);
+            }
+        }
+
+        .notes-display {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 700;
+            pointer-events: none;
+        }
+
+        .note-staff {
+            display: flex;
+            gap: 15px;
+            animation: staffAppear 0.5s ease-out;
+        }
+
+        @keyframes staffAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .staff-note {
+            font-size: 3em;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+            animation: noteFloat 2s ease-in-out forwards;
+        }
+
+        @keyframes noteFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-item-cover {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .gallery-item-cover::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .gallery-item-cover-icon {
+            font-size: 3em;
+            color: white;
+            z-index: 2;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .gallery-item:hover .gallery-item-cover-icon {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        .gallery-item-title {
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        /* Video Player Modal */
+        .video-player-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+            overflow: hidden;
+        }
+
+        .video-player-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .video-player-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-player-container iframe {
+            width: 100% !important;
+            height: 100% !important;
+            border: none !important;
+            display: block !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+        }
+
+        .video-player-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .video-player-title {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+            z-index: 10;
+            max-width: 70%;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .loading-spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+
+        .loading-spinner.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+                gap: 20px;
+            }
+
+            header h1 {
+                font-size: 2.2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            .video-player-container {
+                width: 100%;
+                height: 100%;
+            }
+
+            .video-player-title {
+                font-size: 0.95em;
+                bottom: 15px;
+                left: 15px;
+            }
+
+            .close-button {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 12px;
+            }
+
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            header p {
+                font-size: 0.9em;
+            }
+
+            .gallery-item-title {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+
+            .video-player-container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stars Container -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- Coins Rain Container -->
+    <div class="coins-container" id="coinsContainer"></div>
+
+    <div class="container">
+        <header>
+            <h1 id="titleHeader"><span class="music-note" id="noteIcon">♪</span>Paul Kongwarit</h1>
+            <p>Music Video Album Collection</p>
+        </header>
+
+        <div class="gallery" id="gallery">
+            <!-- Gallery items will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Jingle Bell Rock Audio -->
+    <audio id="jingleAudio" class="jingle-audio">
+        <source src="https://cdn.pixabay.com/download/audio/2024/12/10/audio_d6f8c8c8c8.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Video Player Modal -->
+    <div class="video-player-modal" id="videoModal">
+        <div class="video-player-container">
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+            </div>
+            <h3 class="video-player-title" id="videoTitle">Video Title</h3>
+            <div id="videoPlayerContent"></div>
+            <button class="close-button" onclick="closeVideoPlayer()">✕</button>
+        </div>
+    </div>
+
+    <script>
+        // Music videos data with thumbnails
+        const videos = [
+            {
+                title: "ดวงดาวของน้องพอล",
+                fileId: "1Iz0X1wIJFqKGur5IXtXOJ04uxTs_69wG",
+                thumbnail: "https://drive.google.com/thumbnail?id=1Iz0X1wIJFqKGur5IXtXOJ04uxTs_69wG&sz=w400"
+            },
+            {
+                title: "You You You Pain",
+                fileId: "1jQGWCSw9aXfBeo0eNYtX0nKZ_PrwK8Ij",
+                thumbnail: "https://drive.google.com/thumbnail?id=1jQGWCSw9aXfBeo0eNYtX0nKZ_PrwK8Ij&sz=w400"
+            },
+            {
+                title: "Yak Yak Yok",
+                fileId: "16IT17mOC59J-U7ukPXQbp0zdmvO7VMaR",
+                thumbnail: "https://drive.google.com/thumbnail?id=16IT17mOC59J-U7ukPXQbp0zdmvO7VMaR&sz=w400"
+            },
+            {
+                title: "We can see the moon",
+                fileId: "16zizrNzDOKWJVT1v1cQUU0FpWLhRP9Xd",
+                thumbnail: "https://drive.google.com/thumbnail?id=16zizrNzDOKWJVT1v1cQUU0FpWLhRP9Xd&sz=w400"
+            },
+            {
+                title: "We can see the moon 2",
+                fileId: "1SwQGJ96rXEynMIQ0b1gtmjx3q0UTKXLx",
+                thumbnail: "https://drive.google.com/thumbnail?id=1SwQGJ96rXEynMIQ0b1gtmjx3q0UTKXLx&sz=w400"
+            },
+            {
+                title: "Teacher Shokun",
+                fileId: "1IaU6Fb0zIo0V7WWm6FxLVkc6qKPRyiVY",
+                thumbnail: "https://drive.google.com/thumbnail?id=1IaU6Fb0zIo0V7WWm6FxLVkc6qKPRyiVY&sz=w400"
+            },
+            {
+                title: "Spicy Spicy Spicy",
+                fileId: "1DcLyY7un7-Z836Zx4lMQOLwHMnm4Gatf",
+                thumbnail: "https://drive.google.com/thumbnail?id=1DcLyY7un7-Z836Zx4lMQOLwHMnm4Gatf&sz=w400"
+            },
+            {
+                title: "Pay say pay so",
+                fileId: "1-C1Ylu_d4NvAyH5nKAngzRyC5LcOlrvt",
+                thumbnail: "https://drive.google.com/thumbnail?id=1-C1Ylu_d4NvAyH5nKAngzRyC5LcOlrvt&sz=w400"
+            },
+            {
+                title: "Ha ho he ha",
+                fileId: "1JNrD9nuCNhrAVJTu1RK3rPtVhBiHmQ3r",
+                thumbnail: "https://drive.google.com/thumbnail?id=1JNrD9nuCNhrAVJTu1RK3rPtVhBiHmQ3r&sz=w400"
+            },
+            {
+                title: "Papa Mama Paul",
+                fileId: "1_MO0CzBlt1u8jwf_3gJ9fUTe34wBr3ih",
+                thumbnail: "https://drive.google.com/thumbnail?id=1_MO0CzBlt1u8jwf_3gJ9fUTe34wBr3ih&sz=w400"
+            },
+            {
+                title: "Forevery Begun",
+                fileId: "1_mqWXR6verZNWCWmr2PsJnR8RlYcjICx",
+                thumbnail: "https://drive.google.com/thumbnail?id=1_mqWXR6verZNWCWmr2PsJnR8RlYcjICx&sz=w400"
+            },
+            {
+                title: "Football Football",
+                fileId: "1bOiu0YqZ4M1t1idyTSzrCm7TRexKicwF",
+                thumbnail: "https://drive.google.com/thumbnail?id=1bOiu0YqZ4M1t1idyTSzrCm7TRexKicwF&sz=w400"
+            }
+        ];
+
+        // Initialize gallery
+        function initializeGallery() {
+            const gallery = document.getElementById('gallery');
+            
+            videos.forEach((video, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.onclick = () => playVideo(index);
+                
+                item.innerHTML = `
+                    <div class="gallery-item-cover" style="background-image: url('${video.thumbnail}');">
+                        <div class="gallery-item-cover-icon">▶</div>
+                    </div>
+                    <div class="gallery-item-title">${video.title}</div>
+                `;
+                
+                gallery.appendChild(item);
+            });
+        }
+
+        // Play video using Google Drive embed
+        function playVideo(index) {
+            const video = videos[index];
+            const videoTitle = document.getElementById('videoTitle');
+            const videoModal = document.getElementById('videoModal');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const videoPlayerContent = document.getElementById('videoPlayerContent');
+            
+            videoTitle.textContent = video.title;
+            
+            // Use Google Drive embed URL for video streaming
+            const embedUrl = `https://drive.google.com/file/d/${video.fileId}/preview`;
+            
+            // Create iframe for Google Drive preview
+            videoPlayerContent.innerHTML = `
+                <iframe 
+                    src="${embedUrl}" 
+                    allow="autoplay" 
+                    allowfullscreen="true"
+                    style="width: 100%; height: 100%; border: none;">
+                </iframe>
+            `;
+            
+            videoModal.classList.add('active');
+            loadingSpinner.classList.add('active');
+            
+            // Hide spinner after a short delay
+            setTimeout(() => {
+                loadingSpinner.classList.remove('active');
+            }, 1000);
+        }
+
+        // Close video player
+        function closeVideoPlayer() {
+            const videoModal = document.getElementById('videoModal');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const videoPlayerContent = document.getElementById('videoPlayerContent');
+            
+            videoPlayerContent.innerHTML = '';
+            videoModal.classList.remove('active');
+            loadingSpinner.classList.remove('active');
+        }
+
+        // Close modal when clicking outside the video container
+        document.getElementById('videoModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeVideoPlayer();
+            }
+        });
+
+        // Keyboard shortcut to close (ESC key)
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeVideoPlayer();
+            }
+        });
+
+        // Create twinkling stars
+        function createStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const randomX = Math.random() * window.innerWidth;
+                const randomY = Math.random() * window.innerHeight;
+                star.style.left = randomX + 'px';
+                star.style.top = randomY + 'px';
+                
+                const duration = Math.random() * 2 + 2;
+                star.style.animationDuration = duration + 's';
+                
+                const delay = Math.random() * 3;
+                star.style.animationDelay = delay + 's';
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Coin rain animation
+        function createCoin() {
+            const coinsContainer = document.getElementById('coinsContainer');
+            const coin = document.createElement('div');
+            coin.className = 'coin';
+            
+            // Random horizontal position
+            const randomX = Math.random() * window.innerWidth;
+            coin.style.left = randomX + 'px';
+            
+            // Random fall duration between 3-8 seconds
+            const duration = Math.random() * 5 + 3;
+            coin.style.animationDuration = duration + 's';
+            
+            // Random animation delay
+            const delay = Math.random() * 0.5;
+            coin.style.animationDelay = delay + 's';
+            
+            coinsContainer.appendChild(coin);
+            
+            // Remove coin after animation completes
+            setTimeout(() => {
+                coin.remove();
+            }, (duration + delay) * 1000);
+        }
+        
+        // Create coins at intervals
+        function startCoinRain() {
+            // Create initial coins
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createCoin();
+                }, i * 200);
+            }
+            
+            // Continue creating coins every 500ms
+            setInterval(() => {
+                createCoin();
+            }, 500);
+        }
+
+        // Web Audio API for generating musical notes
+        let audioContext = null;
+        let jingleAudio = null;
+        
+        function getAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioContext;
+        }
+        
+        // Ensure audio playback works on mobile by resuming the context after a tap
+        function unlockAudioContext() {
+            const ctx = getAudioContext();
+            if (ctx.state === 'suspended') {
+                return ctx.resume();
+            }
+            return Promise.resolve();
+        }
+
+        async function playJingleAudio() {
+            if (!jingleAudio) return;
+            try {
+                jingleAudio.currentTime = 0;
+                await jingleAudio.play();
+            } catch (err) {
+                console.warn('Unable to play jingle audio', err);
+            }
+        }
+
+        // Play a single musical note
+        function playNote(frequency, duration = 0.3) {
+            const ctx = getAudioContext();
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+            
+            oscillator.start(ctx.currentTime);
+            oscillator.stop(ctx.currentTime + duration);
+        }
+        
+        // Jingle Bell Rock note sequence (simplified)
+        function playJingleBellRockNotes() {
+            const notes = [
+                { freq: 523.25, duration: 0.3 },  // C5
+                { freq: 587.33, duration: 0.3 },  // D5
+                { freq: 659.25, duration: 0.3 },  // E5
+                { freq: 523.25, duration: 0.3 },  // C5
+                { freq: 587.33, duration: 0.3 },  // D5
+                { freq: 659.25, duration: 0.6 },  // E5 (longer)
+                { freq: 783.99, duration: 0.3 },  // G5
+                { freq: 659.25, duration: 0.3 },  // E5
+            ];
+            
+            let delay = 0;
+            notes.forEach(note => {
+                setTimeout(() => {
+                    playNote(note.freq, note.duration);
+                }, delay * 1000);
+                delay += note.duration + 0.1;
+            });
+        }
+        
+        // Display animated musical notes
+        function displayMusicalNotes() {
+            const notes = ['♪', '♫', '♪', '♫', '♪'];
+            const notesDisplay = document.createElement('div');
+            notesDisplay.className = 'notes-display';
+            
+            const noteStaff = document.createElement('div');
+            noteStaff.className = 'note-staff';
+            
+            notes.forEach((note, index) => {
+                const noteEl = document.createElement('div');
+                noteEl.className = 'staff-note';
+                noteEl.textContent = note;
+                noteEl.style.animationDelay = (index * 0.15) + 's';
+                noteStaff.appendChild(noteEl);
+            });
+            
+            notesDisplay.appendChild(noteStaff);
+            document.body.appendChild(notesDisplay);
+            
+            setTimeout(() => {
+                notesDisplay.remove();
+            }, 3000);
+            
+            createFloatingNotes();
+            playJingleBellRockNotes();
+        }
+        
+        // Create floating note particles
+        function createFloatingNotes() {
+            const noteSymbols = ['♪', '♫', '♪'];
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            for (let i = 0; i < 8; i++) {
+                const note = document.createElement('div');
+                note.className = 'note-particle';
+                note.textContent = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+                
+                const angle = (i / 8) * Math.PI * 2;
+                const distance = 100;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                note.style.left = centerX + 'px';
+                note.style.top = centerY + 'px';
+                note.style.setProperty('--tx', tx + 'px');
+                note.style.animationDelay = (i * 0.1) + 's';
+                
+                document.body.appendChild(note);
+                
+                setTimeout(() => {
+                    note.remove();
+                }, 3000);
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            jingleAudio = document.getElementById('jingleAudio');
+            const noteIcon = document.getElementById('noteIcon');
+            noteIcon.addEventListener('click', async function(e) {
+                e.stopPropagation();
+                await unlockAudioContext();
+                playJingleAudio();
+                displayMusicalNotes();
+            });
+            
+            createStars();
+            initializeGallery();
+            startCoinRain();
+        });
+    </script>
+</body>
+</html>
