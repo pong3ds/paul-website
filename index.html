@@ -252,6 +252,161 @@
             opacity: 0.95;
         }
 
+        .feature-section {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(118, 75, 162, 0.12));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+            color: #f2f2f2;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(3px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-section::after {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -10%;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2), transparent 60%);
+            opacity: 0.3;
+            pointer-events: none;
+            transform: rotate(8deg);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-title {
+            font-size: 1.9em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-chip {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            letter-spacing: 0.2px;
+        }
+
+        .feature-description {
+            max-width: 760px;
+            line-height: 1.6;
+            opacity: 0.9;
+            font-size: 1.05em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-thumb {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-position: center;
+            background-size: cover;
+            position: relative;
+        }
+
+        .feature-thumb::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.6));
+        }
+
+        .feature-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.65);
+            color: #ffd700;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85em;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        }
+
+        .feature-play {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.2em;
+            z-index: 2;
+            text-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0.92;
+        }
+
+        .feature-card:hover .feature-play {
+            transform: scale(1.08);
+            opacity: 1;
+        }
+
+        .feature-card-body {
+            padding: 14px 16px 16px;
+            color: #f9f9f9;
+        }
+
+        .feature-card-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-size: 1.05em;
+        }
+
+        .feature-card-meta {
+            font-size: 0.95em;
+            opacity: 0.78;
+        }
+
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -460,6 +615,14 @@
                 gap: 20px;
             }
 
+            .feature-section {
+                padding: 18px;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
             header h1 {
                 font-size: 2.2em;
             }
@@ -481,6 +644,18 @@
 
             header p {
                 font-size: 1em;
+            }
+
+            .feature-header {
+                gap: 12px;
+            }
+
+            .feature-title {
+                font-size: 1.4em;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             }
 
             .video-player-container {
@@ -518,6 +693,19 @@
                 font-size: 0.9em;
             }
 
+            .feature-section {
+                padding: 16px;
+            }
+
+            .feature-title {
+                font-size: 1.2em;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 12px;
+            }
+
             .gallery-item-title {
                 padding: 10px;
                 font-size: 0.85em;
@@ -541,6 +729,19 @@
             <h1 id="titleHeader"><span class="music-note" id="noteIcon">♪</span>Paul Kongwarit</h1>
             <p>Music Video Album Collection</p>
         </header>
+
+        <section class="feature-section" id="dltsShowcase">
+            <div class="feature-header">
+                <div class="feature-title">Paul New Year 2025 Show @ DLTS</div>
+                <div class="feature-chip">Exclusive live moments</div>
+            </div>
+            <p class="feature-description">
+                A special look at Paul's electrifying New Year 2025 performance at DLTS. Tap a highlight to watch it in the full-screen player.
+            </p>
+            <div class="feature-grid" id="featureGrid">
+                <!-- Showcase cards injected by JavaScript -->
+            </div>
+        </section>
 
         <div class="gallery" id="gallery">
             <!-- Gallery items will be generated by JavaScript -->
@@ -629,6 +830,33 @@
             }
         ];
 
+        const newYearShowcase = [
+            {
+                title: "DLTS 2025 Countdown Intro",
+                fileId: "1j1CsFF6AIhmEy7S2NUnkfyIEa0gbp0Rx",
+                thumbnail: "https://drive.google.com/thumbnail?id=1j1CsFF6AIhmEy7S2NUnkfyIEa0gbp0Rx&sz=w800",
+                meta: "Countdown opener"
+            },
+            {
+                title: "DLTS 2025 Stage Highlights",
+                fileId: "1DbUDSIjimsIrDEDX850p6d4kVSsByLBi",
+                thumbnail: "https://drive.google.com/thumbnail?id=1DbUDSIjimsIrDEDX850p6d4kVSsByLBi&sz=w800",
+                meta: "High-energy moments"
+            },
+            {
+                title: "DLTS 2025 Crowd Energy",
+                fileId: "1uuACQLjLM7SnclaGEyqkz_mBNLQigwuw",
+                thumbnail: "https://drive.google.com/thumbnail?id=1uuACQLjLM7SnclaGEyqkz_mBNLQigwuw&sz=w800",
+                meta: "Fan reactions"
+            },
+            {
+                title: "DLTS 2025 Closing",
+                fileId: "1UIqkSSlBfhjiNLIYMHGOtd6PLQRsAkj2",
+                thumbnail: "https://drive.google.com/thumbnail?id=1UIqkSSlBfhjiNLIYMHGOtd6PLQRsAkj2&sz=w800",
+                meta: "Finale & fireworks"
+            }
+        ];
+
         // Initialize gallery
         function initializeGallery() {
             const gallery = document.getElementById('gallery');
@@ -649,9 +877,30 @@
             });
         }
 
-        // Play video using Google Drive embed
-        function playVideo(index) {
-            const video = videos[index];
+        function renderShowcase() {
+            const featureGrid = document.getElementById('featureGrid');
+
+            newYearShowcase.forEach((clip, index) => {
+                const card = document.createElement('div');
+                card.className = 'feature-card';
+                card.onclick = () => playShowcaseVideo(index);
+
+                card.innerHTML = `
+                    <div class="feature-thumb" style="background-image: url('${clip.thumbnail}');">
+                        <div class="feature-badge">DLTS</div>
+                        <div class="feature-play">▶</div>
+                    </div>
+                    <div class="feature-card-body">
+                        <div class="feature-card-title">${clip.title}</div>
+                        <div class="feature-card-meta">${clip.meta || 'New Year 2025 highlight'}</div>
+                    </div>
+                `;
+
+                featureGrid.appendChild(card);
+            });
+        }
+
+        function openVideo(video) {
             const videoTitle = document.getElementById('videoTitle');
             const videoModal = document.getElementById('videoModal');
             const loadingSpinner = document.getElementById('loadingSpinner');
@@ -659,10 +908,8 @@
             
             videoTitle.textContent = video.title;
             
-            // Use Google Drive embed URL for video streaming
             const embedUrl = `https://drive.google.com/file/d/${video.fileId}/preview`;
             
-            // Create iframe for Google Drive preview
             videoPlayerContent.innerHTML = `
                 <iframe 
                     src="${embedUrl}" 
@@ -675,10 +922,18 @@
             videoModal.classList.add('active');
             loadingSpinner.classList.add('active');
             
-            // Hide spinner after a short delay
             setTimeout(() => {
                 loadingSpinner.classList.remove('active');
             }, 1000);
+        }
+
+        // Play video using Google Drive embed
+        function playVideo(index) {
+            openVideo(videos[index]);
+        }
+
+        function playShowcaseVideo(index) {
+            openVideo(newYearShowcase[index]);
         }
 
         // Close video player
@@ -912,6 +1167,7 @@
             
             createStars();
             initializeGallery();
+            renderShowcase();
             startCoinRain();
         });
     </script>
