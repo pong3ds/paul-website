@@ -818,7 +818,7 @@
             <p>Projects Showcases</p>
             <div class="like-row like-all-row">
                 <button class="like-button" onclick="likeAll()">❤️ Like All</button>
-                <span class="feature-chip">Clicks every like at once</span>
+                <span class="feature-chip">Total Likes <span id="like-count-all">0</span></span>
             </div>
         </header>
 
@@ -902,6 +902,14 @@
             likeTargets.add(id);
         }
 
+        function updateLikeAllCount() {
+            const total = Object.values(likeCounts).reduce((sum, val) => sum + val, 0);
+            const totalEl = document.getElementById('like-count-all');
+            if (totalEl) {
+                totalEl.textContent = total;
+            }
+        }
+
         function getLikeCount(id) {
             return likeCounts[id] || 0;
         }
@@ -912,10 +920,12 @@
             if (countEl) {
                 countEl.textContent = likeCounts[id];
             }
+            updateLikeAllCount();
         }
 
         function likeAll() {
             likeTargets.forEach(id => incrementLike(id));
+            updateLikeAllCount();
         }
 
         // Music videos data with thumbnails
@@ -1406,6 +1416,7 @@
             renderShowcase();
             renderThreeYearOldClips();
             startCoinRain();
+            updateLikeAllCount();
         });
     </script>
 </body>
