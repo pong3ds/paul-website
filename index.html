@@ -295,6 +295,29 @@
             transform: rotate(8deg);
         }
 
+        .hero-section {
+            background: linear-gradient(135deg, rgba(0, 196, 255, 0.15), rgba(118, 75, 162, 0.12));
+        }
+
+        .hero-video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+        }
+
+        .hero-video-wrapper iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         .feature-header {
             display: flex;
             align-items: center;
@@ -422,6 +445,46 @@
         .feature-card-meta {
             font-size: 0.95em;
             opacity: 0.78;
+        }
+
+        .like-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .like-all-row {
+            justify-content: center;
+        }
+
+        .like-button {
+            background: linear-gradient(135deg, #ff7a18 0%, #af002d 74%);
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .like-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .like-button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .like-count {
+            font-weight: 700;
+            color: #ffd700;
+            min-width: 28px;
+            text-align: center;
         }
 
         .gallery {
@@ -753,7 +816,32 @@
         <header>
             <h1 id="titleHeader"><span class="music-note" id="noteIcon">♪</span>Paul Kongwarit</h1>
             <p>Projects Showcases</p>
+            <div class="like-row like-all-row">
+                <button class="like-button" onclick="likeAll()">❤️ Like All</button>
+                <span class="feature-chip">Clicks every like at once</span>
+            </div>
         </header>
+
+        <section class="feature-section hero-section" id="pianoPractice">
+            <div class="feature-header">
+                <div class="feature-title">Paul Practice Piano 2025 Dec 20</div>
+                <div class="feature-chip">New practice capture</div>
+            </div>
+            <p class="feature-description">
+                A cozy piano practice recorded on December 20, 2025. Watch the full take right here.
+            </p>
+            <div class="hero-video-wrapper">
+                <iframe 
+                    src="https://drive.google.com/file/d/15YesIm4KeHkNQYvt2PGv12TDtoI9vSgU/preview" 
+                    allow="autoplay; encrypted-media" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="like-row">
+                <button class="like-button" onclick="incrementLike('piano-practice')">❤️ Like</button>
+                <span class="like-count" id="like-count-piano-practice">0</span>
+            </div>
+        </section>
 
         <section class="feature-section" id="dltsShowcase">
             <div class="feature-header">
@@ -807,6 +895,29 @@
     </div>
 
     <script>
+        const likeCounts = {};
+        const likeTargets = new Set();
+
+        function registerLikeTarget(id) {
+            likeTargets.add(id);
+        }
+
+        function getLikeCount(id) {
+            return likeCounts[id] || 0;
+        }
+
+        function incrementLike(id) {
+            likeCounts[id] = (likeCounts[id] || 0) + 1;
+            const countEl = document.getElementById(`like-count-${id}`);
+            if (countEl) {
+                countEl.textContent = likeCounts[id];
+            }
+        }
+
+        function likeAll() {
+            likeTargets.forEach(id => incrementLike(id));
+        }
+
         // Music videos data with thumbnails
         const videos = [
             {
@@ -948,6 +1059,7 @@
             const gallery = document.getElementById('gallery');
             
             videos.forEach((video, index) => {
+                registerLikeTarget(video.fileId);
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
                 item.onclick = () => playVideo(index);
@@ -957,6 +1069,10 @@
                         <div class="gallery-item-cover-icon">▶</div>
                     </div>
                     <div class="gallery-item-title">${video.title}</div>
+                    <div class="like-row">
+                        <button class="like-button" onclick="event.stopPropagation(); incrementLike('${video.fileId}')">❤️ Like</button>
+                        <span class="like-count" id="like-count-${video.fileId}">${getLikeCount(video.fileId)}</span>
+                    </div>
                 `;
                 
                 gallery.appendChild(item);
@@ -967,6 +1083,7 @@
             const ageThreeGrid = document.getElementById('ageThreeGrid');
 
             threeYearOldClips.forEach((clip, index) => {
+                registerLikeTarget(clip.fileId);
                 const card = document.createElement('div');
                 card.className = 'feature-card';
                 card.onclick = () => openVideo(threeYearOldClips[index]);
@@ -979,6 +1096,10 @@
                     <div class="feature-card-body">
                         <div class="feature-card-title">${clip.title}</div>
                         <div class="feature-card-meta">${clip.meta || 'Age 3 moment'}</div>
+                        <div class="like-row">
+                            <button class="like-button" onclick="event.stopPropagation(); incrementLike('${clip.fileId}')">❤️ Like</button>
+                            <span class="like-count" id="like-count-${clip.fileId}">${getLikeCount(clip.fileId)}</span>
+                        </div>
                     </div>
                 `;
 
@@ -990,6 +1111,7 @@
             const featureGrid = document.getElementById('featureGrid');
 
             newYearShowcase.forEach((clip, index) => {
+                registerLikeTarget(clip.fileId);
                 const card = document.createElement('div');
                 card.className = 'feature-card';
                 card.onclick = () => playShowcaseVideo(index);
@@ -1002,6 +1124,10 @@
                     <div class="feature-card-body">
                         <div class="feature-card-title">${clip.title}</div>
                         <div class="feature-card-meta">${clip.meta || 'New Year 2025 highlight'}</div>
+                        <div class="like-row">
+                            <button class="like-button" onclick="event.stopPropagation(); incrementLike('${clip.fileId}')">❤️ Like</button>
+                            <span class="like-count" id="like-count-${clip.fileId}">${getLikeCount(clip.fileId)}</span>
+                        </div>
                     </div>
                 `;
 
@@ -1266,6 +1392,7 @@
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             jingleAudio = document.getElementById('jingleAudio');
+            registerLikeTarget('piano-practice');
             const noteIcon = document.getElementById('noteIcon');
             noteIcon.addEventListener('click', async function(e) {
                 e.stopPropagation();
