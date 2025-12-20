@@ -302,7 +302,8 @@
         .hero-video-wrapper {
             position: relative;
             width: 100%;
-            padding-top: 56.25%;
+            padding-top: 45%;
+            max-height: 520px;
             border-radius: 14px;
             overflow: hidden;
             background: #000;
@@ -485,6 +486,64 @@
             color: #ffd700;
             min-width: 28px;
             text-align: center;
+        }
+
+        .subscribe-button {
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .subscribe-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .subscribe-button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .subscriber-count {
+            font-weight: 700;
+            color: #7ef9ff;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        .firework {
+            position: fixed;
+            pointer-events: none;
+            width: 0;
+            height: 0;
+            z-index: 1200;
+        }
+
+        .firework-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0));
+            animation: fireworkFly 700ms ease-out forwards;
+            opacity: 0.9;
+        }
+
+        @keyframes fireworkFly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0.2);
+                opacity: 0;
+            }
         }
 
         .gallery {
@@ -817,8 +876,8 @@
             <h1 id="titleHeader"><span class="music-note" id="noteIcon">♪</span>Paul Kongwarit</h1>
             <p>Projects Showcases</p>
             <div class="like-row like-all-row">
-                <button class="like-button" onclick="likeAll()">❤️ Like All</button>
-                <span class="feature-chip">Total Likes <span id="like-count-all">0</span></span>
+                <button class="like-button" onclick="likeAll()">❤️ Like All (<span id="like-count-all">0</span>)</button>
+                <button class="subscribe-button" onclick="incrementSubscribe(event)">🔥 Subscribe (<span id="subscriber-count">0</span>)</button>
             </div>
         </header>
 
@@ -897,6 +956,7 @@
     <script>
         const likeCounts = {};
         const likeTargets = new Set();
+        let subscriberCount = 0;
 
         function registerLikeTarget(id) {
             likeTargets.add(id);
@@ -926,6 +986,48 @@
         function likeAll() {
             likeTargets.forEach(id => incrementLike(id));
             updateLikeAllCount();
+        }
+
+        function updateSubscriberCount() {
+            const el = document.getElementById('subscriber-count');
+            if (el) {
+                el.textContent = subscriberCount;
+            }
+        }
+
+        function incrementSubscribe(event) {
+            subscriberCount += 1;
+            updateSubscriberCount();
+            launchFirework(event);
+        }
+
+        function launchFirework(event) {
+            const x = (event && event.clientX) || window.innerWidth / 2;
+            const y = (event && event.clientY) || window.innerHeight / 2;
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = x + 'px';
+            firework.style.top = y + 'px';
+
+            const colors = ['#ff9a9e', '#fad0c4', '#fbc2eb', '#a1c4fd', '#7ef9ff', '#ffd166'];
+            const particleCount = 18;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework-particle';
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 70 + Math.random() * 60;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                particle.style.background = colors[i % colors.length];
+                particle.style.transform = 'translate(0, 0)';
+                firework.appendChild(particle);
+            }
+
+            document.body.appendChild(firework);
+            setTimeout(() => firework.remove(), 750);
         }
 
         // Music videos data with thumbnails
@@ -1417,6 +1519,7 @@
             renderThreeYearOldClips();
             startCoinRain();
             updateLikeAllCount();
+            updateSubscriberCount();
         });
     </script>
 </body>
